@@ -2,6 +2,8 @@ import express, { Application, Request, Response } from 'express'
 import morgan from 'morgan'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
+import errorMiddleware from './middleware/error.middleware'
+
 const PORT = 3000
 // create an instance server
 const app: Application = express()
@@ -28,8 +30,24 @@ app.use(
 
 // add routing for / path
 app.get('/', (req: Request, res: Response) => {
+  throw new Error('Error exist')
   res.json({
     message: 'Hello World 🌍',
+  })
+})
+//post request
+app.post('/', (req: Request, res: Response) => {
+  res.json({
+    message: 'Hello World 🌍',
+    Date:req.body,
+  })
+})
+// error handler middleware
+app.use(errorMiddleware)
+app.use((_req: Request, res: Response) => {
+  res.status(404).json({
+    message:
+      'Ohh you are lost, read the API documentation to find your way back home 😂',
   })
 })
 // start express server

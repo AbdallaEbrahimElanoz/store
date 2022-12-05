@@ -18,6 +18,6 @@ module.exports = {
   rules: {
     'prettier/prettier': 2, // Means error
     semi: ['error', 'never'],
-    'no-console': 0, // Means warning
-  },
+    'no-console': 0,
+    quotes: ['error', 'double']
 }

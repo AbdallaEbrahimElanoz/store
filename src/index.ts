@@ -3,8 +3,10 @@ import morgan from 'morgan'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
 import errorMiddleware from './middleware/error.middleware'
+import config from './config'
+import db from './database'
 
-const PORT = 3000
+const PORT = config.port || 3000
 // create an instance server
 const app: Application = express()
 
@@ -42,6 +44,24 @@ app.post('/', (req: Request, res: Response) => {
     Date:req.body,
   })
 })
+
+// test db
+db.connect().then((client) => {
+  return client
+    .query('SELECT NOW()')
+    .then((res) => {
+      client.release()
+      console.log(res.rows[0].now)
+    })
+    .catch((err) => {
+      // Make sure to release the client before any error handling,
+      // just in case the error handling itself throws an error.
+      client.release()
+      console.log(err.stack)
+    })
+})
+
+
 // error handler middleware
 app.use(errorMiddleware)
 app.use((_req: Request, res: Response) => {

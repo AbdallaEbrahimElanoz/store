@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit'
 import errorMiddleware from './middleware/error.middleware'
 import config from './config'
 import db from './database'
+import routes from './routes'
 
 const PORT = config.port || 3000
 // create an instance server
@@ -45,21 +46,7 @@ app.post('/', (req: Request, res: Response) => {
   })
 })
 
-// test db
-db.connect().then((client) => {
-  return client
-    .query('SELECT NOW()')
-    .then((res) => {
-      client.release()
-      console.log(res.rows[0].now)
-    })
-    .catch((err) => {
-      // Make sure to release the client before any error handling,
-      // just in case the error handling itself throws an error.
-      client.release()
-      console.log(err.stack)
-    })
-})
+app.use('/api', routes)
 
 
 // error handler middleware

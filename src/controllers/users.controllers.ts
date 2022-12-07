@@ -63,7 +63,7 @@ export const updateOne = async (
 ) => {
   try {
     const user = await userModel.updateOne(req.body)
-    res.json({
+    res.status(201).json({
       status: 'success',
       data: user,
       message: 'User updated successfully',

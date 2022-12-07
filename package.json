@@ -8,10 +8,10 @@
     "build": "tsc",
     "start": "npm run build && node dist/index.js",
     "migration:run": "db-migrate up",
-    "test": "npm run build && jasmine",
     "format": "prettier --write src/**/*.ts",
     "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint --fix"
+    "lint:fix": "eslint --fix",
+    "test": "set NODE_ENV=test && db-migrate up --env test && tsc && jasmine && db-migrate down"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "ISC", 
   "bugs": {
     "url": "https://github.com/AbdallaEbrahimElanoz/store/issues"
   },
